@@ -1,0 +1,24 @@
+# .github/workflows/wp-cron-runner.yml
+name: Trigger WordPress' pseudo-cronjobs regularly
+
+on:
+  schedule:
+    # Runs "At minute 1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, and 56."
+    # see https://crontab.guru/#1,6,11,16,21,26,31,36,41,46,51,56_*_*_*_*
+    - cron: '1,6,11,16,21,26,31,36,41,46,51,56 * * * *'
+jobs:
+  maintain:
+    name: Trigger Cron Runner for WordPress
+    runs-on: ubuntu-latest
+    steps:
+      - name: cURL request
+        # Hit the webhook endpoint to let WordPress do some routine jobs
+        # 
+        # -X specifies which HTTP request method will be used,
+        # when communicating with the remote server.
+        # -d causes curl to send the data using the application/x-www-form-urlencoded Content-Type
+        # run: curl -X POST -d {} https://figuren.theater/run-cron
+        # 
+        # Adding a job summary
+        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary
+        run: curl "https://figuren.theater" >> $GITHUB_STEP_SUMMARY
